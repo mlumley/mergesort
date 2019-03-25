@@ -1,40 +1,71 @@
 #!/usr/bin/env python3
 import random
 
-def topDownMergeSort(ary):
-    if len(ary) == 1:
-        return ary
+def topDownMergeSort(a):
+    if len(a) == 1:
+        return a
 
-    width = len(ary) / 2
+    width = len(a) // 2
 
-    left = topDownMergeSort(ary[:width])
-    right = topDownMergeSort(ary[width:])
+    left = topDownMergeSort(a[:width])
+    right = topDownMergeSort(a[width:])
     
     return merge(left, right)
 
+def botUpMergeSort(a):
+    result = a
+    width = 1 
+    start = 0
+    end = len(result)
+
+    while width < end:
+        while start < end:
+            left = result[start:start+width]
+            right = result[start+width:start+2*width]
+            temp = merge(left, right)
+
+            # Copy from temp array to result array
+            for i in range(0, len(temp)):
+                result[i+start] = temp[i]
+
+            start = start + 2 * width
+        width *= 2
+        start = 0
+    return result
+
 def merge(left, right):
-    b = []
+    combined = []
     i = 0
     j = 0
 
     while i < len(left) and j < len(right):
         if left[i] < right[j]:
-            b.append(left[i])
+            combined.append(left[i])
             i += 1
         else:
-            b.append(right[j])
+            combined.append(right[j])
             j += 1
 
     while i < len(left):
-        b.append(left[i])
+        combined.append(left[i])
         i += 1
     
     while j < len(right):
-        b.append(right[j])
+        combined.append(right[j])
         j += 1
 
-    return b
+    return combined
 
+# Test code
 ranList = [random.randint(-20, 20) for i in range(0, 10)]
+print("Random List")
 print(ranList)
+
+print("Sorted List")
+print(sorted(ranList))
+
+print("TopDown")
 print(topDownMergeSort(ranList))
+
+print("BottomUp")
+print(botUpMergeSort(ranList))
