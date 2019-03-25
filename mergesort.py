@@ -46,6 +46,7 @@ def merge(left, right):
             combined.append(right[j])
             j += 1
 
+    # Add any remaining elements if there are any
     while i < len(left):
         combined.append(left[i])
         i += 1
